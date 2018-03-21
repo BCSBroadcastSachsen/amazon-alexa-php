@@ -124,17 +124,37 @@ class Request
     }
 
     /**
-     * @return string|null
-     */
+    * @return string|null
+    */
     public function getApplicationId()
     {
-        // workaround for developer console
-        if ($this->session && $this->session->application) {
-            return $this->session->application->applicationId;
-        } elseif ($this->context && ($system = $this->context->system) && $system->application) {
-            return $system->application->applicationId;
-        }
-
-        return null;
+        return $this->context->system->application->applicationId ?? null;
     }
+
+    /**
+     * @return User|null
+     */
+    public function getUser()
+    {
+        return $this->context->system->user ?? null;
+    }
+
+    /**
+     * @return Device|null
+     */
+    public function getDevice()
+    {
+        return $this->context->system->device ?? null;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed $default
+     * @return mixed|null
+     */
+    public function getSessionAttribute($key, $default = null)
+    {
+        return $this->session->attributes[$key] ?? $default;
+    }
+
 }
